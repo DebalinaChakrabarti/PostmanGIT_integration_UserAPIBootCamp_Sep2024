@@ -1,0 +1,970 @@
+{
+	"info": {
+		"_postman_id": "9a8702cd-8c0f-4b43-a2b6-1163a320dbb0",
+		"name": "User API BootCamp September2024",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create New User with INVALID Method",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a41dcca2-8c77-44bb-9b62-9d89e752d83c",
+						"exec": [
+							"const jsonData = pm.response.json();",
+							"console.log(jsonData);",
+							"",
+							"//calling common methods",
+							"eval(pm.environment.get(\"commonTests\"))();",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "ca75322b-1aa1-4ba1-b4f9-058afef29ff6",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": {
+						"password": "{{passwd}}",
+						"username": "{{userName}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"userAddress\": {\n },\n  \"user_first_name\": \"{{userFirstName}}\",\n  \"user_last_name\": \"{{userLastName}}\",\n  \"user_contact_number\": {{contactNo}},\n  \"user_email_id\": \"{{Email}}\"\n}\n\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{BASEURL}}{{Endpoint}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Create New User with INVALID Content Type",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a41dcca2-8c77-44bb-9b62-9d89e752d83c",
+						"exec": [
+							"const jsonData = pm.response.json();",
+							"console.log(jsonData);",
+							"",
+							"//calling common methods",
+							"eval(pm.environment.get(\"commonTests\"))();",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "cdb8340d-ddc5-4502-9572-a2eed1f31818",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"userAddress\": {\n },\n  \"user_first_name\": \"{{userFirstName}}\",\n  \"user_last_name\": \"{{userLastName}}\",\n  \"user_contact_number\": {{contactNo}},\n  \"user_email_id\": \"{{Email}}\"\n}\n\n",
+					"options": {
+						"raw": {
+							"language": "html"
+						}
+					}
+				},
+				"url": "{{BASEURL}}{{Endpoint}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Create New User with Mandatory Fields Only",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a41dcca2-8c77-44bb-9b62-9d89e752d83c",
+						"exec": [
+							"const jsonData = pm.response.json();",
+							"console.log(jsonData);",
+							"",
+							"//calling common methods",
+							"eval(pm.environment.get(\"commonTests\"))();",
+							"",
+							"const expectedSchema = {",
+							"   \"type\": \"object\",",
+							"  \"properties\": {",
+							"    \"userAddress\": {",
+							"      \"type\": \"object\"",
+							"    },",
+							"    \"user_first_name\": {",
+							"      \"type\": \"string\"",
+							"    },",
+							"    \"user_last_name\": {",
+							"      \"type\": \"string\"",
+							"    },",
+							"    \"user_contact_number\": {",
+							"      \"type\": \"integer\"",
+							"    },",
+							"    \"user_email_id\": {",
+							"      \"type\": \"string\"",
+							"    }",
+							"  },",
+							"  \"required\": [",
+							"    \"userAddress\",",
+							"    \"user_first_name\",",
+							"    \"user_last_name\",",
+							"    \"user_contact_number\",",
+							"    \"user_email_id\"",
+							"  ]",
+							"}",
+							"if (pm.response.code === 201) {",
+							"",
+							"    //calling jsonSchemaValidation methods",
+							"    eval(pm.environment.get(\"jsonSchemaValidation\"))();",
+							"",
+							"    // pm.test(\"Verify JSON Schema using AJV\", function () {",
+							"    //     pm.response.to.have.jsonSchema(expectedSchema);",
+							"    // });",
+							"    // pm.test('Validating Response is not NULL', function () {",
+							"    // pm.expect(jsonData).to.not.equal(null);})",
+							"",
+							"    pm.test(\"Test Data Type Of the Response\", () => {",
+							"    pm.expect(jsonData).to.be.an(\"object\");",
+							"    pm.expect(jsonData.user_first_name).to.be.a(\"string\");",
+							"    pm.expect(jsonData.user_last_name).to.be.a(\"string\");",
+							"    pm.expect(jsonData.user_contact_number).to.be.a(\"number\");",
+							"    pm.expect(jsonData.user_email_id).to.be.a(\"string\");",
+							"    });",
+							"",
+							"    pm.test(\"Validating FirstName of the User\", () => {",
+							"        pm.expect(jsonData.user_first_name).to.equal(pm.variables.get(\"userFirstName\"));",
+							"    });",
+							"    pm.test(\"Validating Last Name of the User\", () => {",
+							"        pm.expect(jsonData.user_last_name).to.equal(pm.variables.get(\"userLastName\"));",
+							"    });",
+							"    pm.test(\"Validating ContactNumber of the User\", () => {",
+							"        pm.expect(jsonData.user_contact_number).to.equal(pm.variables.get(\"contactNo\"));",
+							"    });",
+							"    pm.test(\"Validating Email of the User\", () => {",
+							"        pm.expect(jsonData.user_email_id).to.equal(pm.variables.get(\"Email\"));",
+							"    });",
+							"",
+							"pm.collectionVariables.set(\"userID1_cl\", jsonData.user_id);",
+							"pm.collectionVariables.set(\"userFirstname1_cl\", jsonData.user_first_name);",
+							"",
+							"}",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "c07c427e-2799-456c-90fc-78bbca8b2b45",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": {
+						"password": "{{passwd}}",
+						"username": "{{userName}}"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"userAddress\": {\n },\n  \"user_first_name\": \"{{userFirstName}}\",\n  \"user_last_name\": \"{{userLastName}}\",\n  \"user_contact_number\": {{contactNo}},\n  \"user_email_id\": \"{{Email}}\"\n}\n\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{BASEURL}}{{Endpoint}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Create New User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a41dcca2-8c77-44bb-9b62-9d89e752d83c",
+						"exec": [
+							"const jsonData = pm.response.json();",
+							"console.log(jsonData);",
+							"",
+							"eval(pm.environment.get(\"commonTests\"))();",
+							"",
+							"",
+							"const expectedSchema = {",
+							"  \"type\": \"object\",",
+							"  \"properties\": {",
+							"    \"userAddress\": {",
+							"      \"type\": \"object\",",
+							"      \"properties\": {",
+							"        \"plotNumber\": {",
+							"          \"type\": \"string\"",
+							"        },",
+							"        \"street\": {",
+							"          \"type\": \"string\"",
+							"        },",
+							"        \"state\": {",
+							"          \"type\": \"string\"",
+							"        },",
+							"        \"country\": {",
+							"          \"type\": \"string\"",
+							"        },",
+							"        \"zipCode\": {",
+							"          \"type\": \"integer\"",
+							"        }",
+							"      },",
+							"      \"required\": [",
+							"        \"plotNumber\",",
+							"        \"street\",",
+							"        \"state\",",
+							"        \"country\",",
+							"        \"zipCode\"",
+							"      ]",
+							"    },",
+							"    \"user_first_name\": {",
+							"      \"type\": \"string\"",
+							"    },",
+							"    \"user_last_name\": {",
+							"      \"type\": \"string\"",
+							"    },",
+							"    \"user_contact_number\": {",
+							"      \"type\": \"integer\"",
+							"    },",
+							"    \"user_email_id\": {",
+							"      \"type\": \"string\"",
+							"    }",
+							"  },",
+							"  \"required\": [",
+							"    \"userAddress\",",
+							"    \"user_first_name\",",
+							"    \"user_last_name\",",
+							"    \"user_contact_number\",",
+							"    \"user_email_id\"",
+							"  ]",
+							"}",
+							"",
+							"if (pm.response.code === 201) {",
+							"    ",
+							"    //calling jsonSchemaValidation methods",
+							"    eval(pm.environment.get(\"jsonSchemaValidation\"))();",
+							"",
+							"    // pm.test(\"Verify JSON Schema using AJV\", function () {",
+							"    //     pm.response.to.have.jsonSchema(expectedSchema);",
+							"    // });",
+							"    // pm.test('Validating Response is not NULL', function () {",
+							"    // pm.expect(jsonData).to.not.equal(null);})",
+							"",
+							"    pm.test(\"Test Data Type Of the Response\", () => {",
+							"    pm.expect(jsonData).to.be.an(\"object\");",
+							"    pm.expect(jsonData.user_first_name).to.be.a(\"string\");",
+							"    pm.expect(jsonData.user_last_name).to.be.a(\"string\");",
+							"    pm.expect(jsonData.user_contact_number).to.be.a(\"number\");",
+							"    pm.expect(jsonData.user_email_id).to.be.a(\"string\");",
+							"    });",
+							"",
+							"",
+							"    pm.test(\"Validating FirstName of the User\", () => {",
+							"        pm.expect(jsonData.user_first_name).to.equal(pm.variables.get(\"userFirstName\"));",
+							"    });",
+							"    pm.test(\"Validating Last Name of the User\", () => {",
+							"        pm.expect(jsonData.user_last_name).to.equal(pm.variables.get(\"userLastName\"));",
+							"    });",
+							"    pm.test(\"Validating ContactNumber of the User\", () => {",
+							"        pm.expect(jsonData.user_contact_number).to.equal(pm.variables.get(\"contactNo\"));",
+							"    });",
+							"    pm.test(\"Validating Email of the User\", () => {",
+							"        pm.expect(jsonData.user_email_id).to.equal(pm.variables.get(\"Email\"));",
+							"    });",
+							"",
+							"",
+							"pm.collectionVariables.set(\"userID2_cl\", jsonData.user_id);",
+							"pm.collectionVariables.set(\"userFirstname2_cl\", jsonData.user_first_name);",
+							"",
+							"}",
+							"// else{",
+							"//     pm.test(\"Validating Response Message\", () => {",
+							"//         if(jsonData.message !== \"\"){",
+							"//             pm.expect(jsonData.message).to.equal(pm.variables.get(\"message\"));",
+							"//         }",
+							"//     });",
+							"    ",
+							"// }",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "a3e0276b-399d-4f02-b6fc-1b1640fa37da",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userAddress\": {\n        \"plotNumber\": \"{{plotNumber}}\",\n        \"street\": \"{{street}}\",\n        \"state\": \"{{state}}\",\n        \"country\": \"{{country}}\",\n        \"zipCode\": {{zipCode}}\n    },\n    \"user_first_name\": \"{{userFirstName}}\",\n    \"user_last_name\": \"{{userLastName}}\",\n    \"user_contact_number\": {{contactNo}},\n    \"user_email_id\": \"{{Email}}\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{BASEURL}}{{Endpoint}}"
+			},
+			"response": []
+		},
+		{
+			"name": "GET All Users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5a7af45c-5761-4b1b-81ff-35613db981c4",
+						"exec": [
+							"const jsonData = pm.response.json();",
+							"console.log(jsonData);",
+							"",
+							"",
+							"eval(pm.environment.get(\"commonTests\"))();",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "d8acec49-0b98-41d8-8cb2-1c3e06927442",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{BASEURL}}{{Endpoint}}"
+			},
+			"response": []
+		},
+		{
+			"name": "GET User By User ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5fea0744-13d6-46b7-9d0a-d46068d566c0",
+						"exec": [
+							"const jsonData = pm.response.json();",
+							"console.log(jsonData);",
+							"",
+							"eval(pm.environment.get(\"commonTests\"))();",
+							"",
+							"",
+							"const expectedSchema =  ",
+							"{",
+							"  \"type\": \"object\",",
+							"  \"properties\": {",
+							"    \"userAddress\": {",
+							"      \"type\": \"object\",",
+							"      \"properties\": {",
+							"        \"addressId\": {",
+							"          \"type\": \"integer\"",
+							"        },",
+							"        \"plotNumber\": {",
+							"          \"type\": \"string\"",
+							"        },",
+							"        \"street\": {",
+							"          \"type\": \"string\"",
+							"        },",
+							"        \"state\": {",
+							"          \"type\": \"string\"",
+							"        },",
+							"        \"country\": {",
+							"          \"type\": \"string\"",
+							"        },",
+							"        \"zipCode\": {",
+							"          \"type\": \"integer\"",
+							"        }",
+							"      },",
+							"      \"required\": [",
+							"        \"addressId\",",
+							"        \"plotNumber\",",
+							"        \"street\",",
+							"        \"state\",",
+							"        \"country\",",
+							"        \"zipCode\"",
+							"      ]",
+							"    },",
+							"    \"user_id\": {",
+							"      \"type\": \"integer\"",
+							"    },",
+							"    \"user_first_name\": {",
+							"      \"type\": \"string\"",
+							"    },",
+							"    \"user_last_name\": {",
+							"      \"type\": \"string\"",
+							"    },",
+							"    \"user_contact_number\": {",
+							"      \"type\": \"integer\"",
+							"    },",
+							"    \"user_email_id\": {",
+							"      \"type\": \"string\"",
+							"    },",
+							"    \"creation_time\": {",
+							"      \"type\": \"string\"",
+							"    },",
+							"    \"last_mod_time\": {",
+							"      \"type\": \"string\"",
+							"    }",
+							"  },",
+							"  \"required\": [",
+							"    \"userAddress\",",
+							"    \"user_id\",",
+							"    \"user_first_name\",",
+							"    \"user_last_name\",",
+							"    \"user_contact_number\",",
+							"    \"user_email_id\",",
+							"    \"creation_time\",",
+							"    \"last_mod_time\"",
+							"  ]",
+							"}",
+							"",
+							"if (pm.response.code === 200) {",
+							"    ",
+							"    //calling jsonSchemaValidation methods",
+							"    eval(pm.environment.get(\"jsonSchemaValidation\"))();",
+							"",
+							"    // pm.test(\"Verify JSON Schema using AJV\", function () {",
+							"    //     pm.response.to.have.jsonSchema(expectedSchema);",
+							"    // });",
+							"    // pm.test('Validating Response is not NULL', function () {",
+							"    // pm.expect(jsonData).to.not.equal(null);})",
+							"",
+							"    pm.test(\"Test Data Type Of the Response\", () => {",
+							"    pm.expect(jsonData).to.be.an(\"object\");",
+							"    pm.expect(jsonData.user_id).to.be.a(\"number\");",
+							"    pm.expect(jsonData.user_first_name).to.be.a(\"string\");",
+							"    pm.expect(jsonData.user_last_name).to.be.a(\"string\");",
+							"    pm.expect(jsonData.user_contact_number).to.be.a(\"number\");",
+							"    pm.expect(jsonData.user_email_id).to.be.a(\"string\");",
+							"    });",
+							"",
+							"    pm.test(\"Validating User ID of the User\", () => {",
+							"        pm.expect(jsonData.user_id).to.equal(pm.collectionVariables.get(\"userID2_cl\"));",
+							"    });",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "9c02fe3c-4079-44b6-b59b-950dbb16c8d7",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{BASEURL}}{{Endpoint}}"
+			},
+			"response": []
+		},
+		{
+			"name": "GET user by USER First Name",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a83f3a64-05aa-4552-8047-5caf6cfd8301",
+						"exec": [
+							"const jsonData = pm.response.json();",
+							"console.log(jsonData);",
+							"",
+							"//calling common Tests methods",
+							"eval(pm.environment.get(\"commonTests\"))();",
+							"",
+							"",
+							"const expectedSchema =  ",
+							"{",
+							" \"type\": \"array\",",
+							"  \"items\": [",
+							"    {",
+							"      \"type\": \"object\",",
+							"      \"properties\": {",
+							"        \"userAddress\": {",
+							"          \"type\": \"object\",",
+							"          \"properties\": {",
+							"            \"addressId\": {",
+							"              \"type\": \"integer\"",
+							"            },",
+							"            \"plotNumber\": {",
+							"              \"type\": \"string\"",
+							"            },",
+							"            \"street\": {",
+							"              \"type\": \"string\"",
+							"            },",
+							"            \"state\": {",
+							"              \"type\": \"string\"",
+							"            },",
+							"            \"country\": {",
+							"              \"type\": \"string\"",
+							"            },",
+							"            \"zipCode\": {",
+							"              \"type\": \"integer\"",
+							"            }",
+							"          },",
+							"          \"required\": [",
+							"            \"addressId\",",
+							"            \"plotNumber\",",
+							"            \"street\",",
+							"            \"state\",",
+							"            \"country\",",
+							"            \"zipCode\"",
+							"          ]",
+							"        },",
+							"        \"user_id\": {",
+							"          \"type\": \"integer\"",
+							"        },",
+							"        \"user_first_name\": {",
+							"          \"type\": \"string\"",
+							"        },",
+							"        \"user_last_name\": {",
+							"          \"type\": \"string\"",
+							"        },",
+							"        \"user_contact_number\": {",
+							"          \"type\": \"integer\"",
+							"        },",
+							"        \"user_email_id\": {",
+							"          \"type\": \"string\"",
+							"        },",
+							"        \"creation_time\": {",
+							"          \"type\": \"string\"",
+							"        },",
+							"        \"last_mod_time\": {",
+							"          \"type\": \"string\"",
+							"        }",
+							"      },",
+							"      \"required\": [",
+							"        \"userAddress\",",
+							"        \"user_id\",",
+							"        \"user_first_name\",",
+							"        \"user_last_name\",",
+							"        \"user_contact_number\",",
+							"        \"user_email_id\",",
+							"        \"creation_time\",",
+							"        \"last_mod_time\"",
+							"      ]",
+							"    }",
+							"  ]",
+							"}",
+							"",
+							"if (pm.response.code === 200) {",
+							"    ",
+							"    //calling jsonSchemaValidation methods",
+							"    eval(pm.environment.get(\"jsonSchemaValidation\"))();",
+							"",
+							"    // pm.test(\"Verify JSON Schema using AJV\", function () {",
+							"    //     pm.response.to.have.jsonSchema(expectedSchema);",
+							"    // });",
+							"    // pm.test('Validating Response is not NULL', function () {",
+							"    // pm.expect(jsonData).to.not.equal(null);})",
+							"",
+							"    pm.test(\"Test Data Type Of the Response\", () => {",
+							"    pm.expect(jsonData).to.be.an(\"array\");",
+							"    jsonData.forEach(object => {",
+							"    pm.test(`Test Data Type of  response id${object.user_id}`, () => {",
+							"    pm.expect(object.user_id).to.be.a(\"number\");",
+							"    pm.expect(object.user_first_name).to.be.a(\"string\");",
+							"     pm.expect(object.user_contact_number).to.be.a(\"number\");",
+							"     pm.expect(object.user_email_id).to.be.a(\"string\");",
+							"    });",
+							"    });",
+							"    });",
+							"",
+							"    ",
+							"    pm.test(\"Validating User ID of the User\", () => {",
+							"        pm.expect(jsonData.user_id).to.equal(pm.collectionVariables.get(\"userID2_cl\"));",
+							"    });",
+							"    pm.test(\"Validating User First Name of the User\", () => {",
+							"        pm.expect(jsonData.user_first_name).to.equal(pm.collectionVariables.get(\"userFirstname2_cl\"));",
+							"    });",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "7505b65e-4854-481a-bbe3-934adafacce7",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{BASEURL}}{{Endpoint}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Update User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "491b291e-0a6f-45c6-ad53-628a47f4e133",
+						"exec": [
+							"const jsonData = pm.response.json();",
+							"console.log(jsonData);",
+							"//pm.collectionVariables.set(\"userFirstname2_cl\", jsonData.user_first_name);",
+							"",
+							"eval(pm.environment.get(\"commonTests\"))();",
+							"",
+							"",
+							"const expectedSchema = {",
+							"  \"type\": \"object\",",
+							"  \"properties\": {",
+							"    \"userAddress\": {",
+							"      \"type\": \"object\",",
+							"      \"properties\": {",
+							"        \"plotNumber\": {",
+							"          \"type\": \"string\"",
+							"        },",
+							"        \"street\": {",
+							"          \"type\": \"string\"",
+							"        },",
+							"        \"state\": {",
+							"          \"type\": \"string\"",
+							"        },",
+							"        \"country\": {",
+							"          \"type\": \"string\"",
+							"        },",
+							"        \"zipCode\": {",
+							"          \"type\": \"integer\"",
+							"        }",
+							"      },",
+							"      \"required\": [",
+							"        \"plotNumber\",",
+							"        \"street\",",
+							"        \"state\",",
+							"        \"country\",",
+							"        \"zipCode\"",
+							"      ]",
+							"    },",
+							"    \"user_first_name\": {",
+							"      \"type\": \"string\"",
+							"    },",
+							"    \"user_last_name\": {",
+							"      \"type\": \"string\"",
+							"    },",
+							"    \"user_contact_number\": {",
+							"      \"type\": \"integer\"",
+							"    },",
+							"    \"user_email_id\": {",
+							"      \"type\": \"string\"",
+							"    }",
+							"  },",
+							"  \"required\": [",
+							"    \"userAddress\",",
+							"    \"user_first_name\",",
+							"    \"user_last_name\",",
+							"    \"user_contact_number\",",
+							"    \"user_email_id\"",
+							"  ]",
+							"}",
+							"",
+							"if(pm.response.code===200){",
+							"    ",
+							"    //calling jsonSchemaValidation methods",
+							"    eval(pm.environment.get(\"jsonSchemaValidation\"))();",
+							"",
+							"    // pm.test(\"Verify JSON Schema using AJV\", function () {",
+							"    //     pm.response.to.have.jsonSchema(expectedSchema);",
+							"    // });",
+							"    // pm.test('Validating Response is not NULL', function () {",
+							"    // pm.expect(jsonData).to.not.equal(null);})",
+							"",
+							"    pm.test(\"Test Data Type Of the Response\", () => {",
+							"    pm.expect(jsonData).to.be.an(\"object\");",
+							"    pm.expect(jsonData.user_first_name).to.be.a(\"string\");",
+							"    pm.expect(jsonData.user_last_name).to.be.a(\"string\");",
+							"    pm.expect(jsonData.user_contact_number).to.be.a(\"number\");",
+							"    pm.expect(jsonData.user_email_id).to.be.a(\"string\");",
+							"    });",
+							"    pm.test(\"Validating User ID of the User\", () => {",
+							"        pm.expect(jsonData.user_id).to.equal(pm.collectionVariables.get(\"userID2_cl\"));",
+							"    });",
+							"",
+							"pm.collectionVariables.set(\"userFirstname2_cl\", jsonData.user_first_name);",
+							"",
+							"}",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "68d313e8-9b9a-48ad-9d19-4ed606f70634",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": {
+						"password": "{{passwd}}",
+						"username": "{{userName}}"
+					}
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userAddress\": {\n       \"plotNumber\": \"{{plotNumber}}\",\n        \"street\": \"{{street}}\",\n        \"state\": \"{{state}}\",\n        \"country\": \"{{country}}\",\n        \"zipCode\": {{zipCode}}\n    },\n    \"user_first_name\": \"{{userFirstName}}\",\n    \"user_last_name\": \"{{userLastName}}\",\n    \"user_contact_number\": {{contactNo}},\n    \"user_email_id\": \"{{Email}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{BASEURL}}{{Endpoint}}"
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE User By User ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4a884415-e822-4cd9-8d36-812716311f81",
+						"exec": [
+							"//pm.collectionVariables.unset(\"userID2_cl\");",
+							"//pm.collectionVariables.unset(\"userFirstname2_cl\");",
+							"",
+							"const jsonData = pm.response.json();",
+							"console.log(jsonData);",
+							"",
+							"eval(pm.environment.get(\"commonTests\"))();",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "2ca470d3-7e58-4f4e-96d2-2839db1a5b94",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "{{BASEURL}}{{Endpoint}}"
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE User By User First Name",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "af98725a-3087-406e-94d0-87ad12f7911d",
+						"exec": [
+							"//pm.collectionVariables.unset(\"userID1_cl\");",
+							"//pm.collectionVariables.unset(\"userFirstname1_cl\");",
+							"",
+							"const jsonData = pm.response.json();",
+							"console.log(jsonData);",
+							"",
+							"eval(pm.environment.get(\"commonTests\"))();",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "b87185cf-c294-49a5-8e09-8ad486e443d8",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "{{BASEURL}}{{Endpoint}}"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "649e2afc-74ff-4ab6-a9f7-ae74e9d37c7e",
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"if (typeof pm.variables.get('requestdata') !== 'object') {",
+					"    pm.variables.set('requestdata', pm.iterationData.toObject());",
+					"}",
+					"const requestdata = pm.variables.get('requestdata');",
+					"",
+					"if(typeof requestdata !== 'object' || Object.keys(requestdata).length ===0) {",
+					"    console.log(\"No external file found\")",
+					"    return;",
+					"}",
+					"",
+					"const currentrequest = requestdata.requests.filter(({name}) => name === pm.info.requestName) [0];",
+					"if(!currentrequest){",
+					"    console.log(`Request ${pm.info.requestName} has no data defined.`);",
+					"}",
+					"",
+					"const variables = currentrequest.data.shift();",
+					"",
+					"Object.entries(variables).forEach(([key, value]) => {",
+					"        pm.variables.set(key, value);",
+					"    });",
+					"",
+					"// pm.variables.set('requestdata',requestdata);",
+					"// if(currentrequest.data.length > 0){",
+					"//     pm.execution.setNextRequest(pm.info.requestName)",
+					"// }",
+					" ",
+					" pm.variables.set('requestdata',requestdata);",
+					"if(currentrequest.data.length > 0){",
+					"    postman.setNextRequest(pm.info.requestName)",
+					"}"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "80543f46-1bc4-4b65-95a9-0c18ff635dbc",
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"// pm.test(\"Status code is 200\", function () {",
+					"//     pm.response.to.have.status(200);",
+					"// });",
+					"// pm.test(\"Content-Type is present\", function () {",
+					"//     pm.response.to.have.header(\"Content-Type\");",
+					"// });",
+					"",
+					"var commonTests = () =>{",
+					"pm.test(\"Validating Status Code\", ()=> {",
+					"    pm.expect(pm.response.code).to.eql(pm.variables.get(\"statusCode\"));",
+					"});",
+					"",
+					"pm.test(\"Response status text check\", function () {",
+					"    pm.expect(pm.response.status).to.eql(pm.variables.get('statusText'));",
+					"});",
+					"",
+					"pm.test(\"Content-Type header is application/json\", ()=>{",
+					"    pm.response.to.have.header(\"Content-Type\");",
+					"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+					"});",
+					"",
+					"pm.test(\"Response time is less than 1000ms\", function () {",
+					"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+					"});",
+					"",
+					"pm.test('Validating Response is not NULL', function () {",
+					"    pm.expect(jsonData).to.not.equal(null);})",
+					"",
+					"}",
+					"",
+					"pm.environment.set(\"commonTests\",commonTests.toString());",
+					"",
+					"// var checkResponseIsNotNull = () =>{",
+					"//     pm.test('Validating Response is not NULL', function () {",
+					"//     pm.expect(jsonData).to.not.equal(null);})",
+					"// }",
+					"",
+					"var jsonSchemaValidation = () =>{",
+					"    pm.test(\"Verify JSON Schema using AJV\", function () {",
+					"        pm.response.to.have.jsonSchema(expectedSchema);",
+					"    });",
+					"}",
+					"",
+					"pm.environment.set(\"jsonSchemaValidation\",jsonSchemaValidation.toString());",
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BASEURL",
+			"value": "https://userserviceapp-f5a54828541b.herokuapp.com/uap"
+		},
+		{
+			"key": "userName",
+			"value": "Numpy@gmail.com"
+		},
+		{
+			"key": "passwd",
+			"value": "userapi@nn"
+		},
+		{
+			"key": "userID1_cl",
+			"value": ""
+		},
+		{
+			"key": "userFirstname1_cl",
+			"value": ""
+		},
+		{
+			"key": "userID2_cl",
+			"value": ""
+		},
+		{
+			"key": "userFirstname2_cl",
+			"value": ""
+		},
+		{
+			"key": "invalidUserID",
+			"value": "5000",
+			"type": "string"
+		},
+		{
+			"key": "invalidUserFirstName",
+			"value": "zase",
+			"type": "string"
+		}
+	]
+}
